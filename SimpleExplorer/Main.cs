@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Text;
@@ -56,18 +57,18 @@ namespace SimpleExplorer
         }
         private string StorageContainerName
         {
-            get { return _storageContainerName;  }
-            set { _storageContainerName = value.Trim();  }
+            get { return _storageContainerName; }
+            set { _storageContainerName = value.Trim(); }
         }
         private string StorageAccountName
         {
-            get { return _storageAccountName;  }
+            get { return _storageAccountName; }
             set { _storageAccountName = value.Trim(); }
         }
         private string StorageAccountKey
         {
-            get { return _storageAccountKey;  }   
-            set { _storageAccountKey = value.Trim();  }
+            get { return _storageAccountKey; }
+            set { _storageAccountKey = value.Trim(); }
         }
         private string StorageConnectionString => $"DefaultEndpointsProtocol=https;AccountName={StorageAccountName};AccountKey={StorageAccountKey}";
         #endregion
@@ -76,7 +77,7 @@ namespace SimpleExplorer
         public Main()
         {
             InitializeComponent();
-
+            CreateDataGridView();
             //set default button states 
             ReaderEnabled = false;
             SenderEnabled = false;
@@ -89,6 +90,15 @@ namespace SimpleExplorer
             //if user has added azure settings to app.config, read them and place in form
             LoadConfigSettings();
         }
+
+        private void CreateDataGridView()
+        {
+            this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.Columns.Add("Key", "Key");
+            this.dataGridView1.Columns.Add("Value", "Value");
+
+        }
+
         #endregion
 
         #region Events
@@ -193,7 +203,8 @@ namespace SimpleExplorer
             OutputStatus("Sending message...");
             try
             {
-                await EventHub.SendAsync(new EventData(Encoding.UTF8.GetBytes(tbEhInput.Text.Trim())));
+                var eventData = CreateEventData();
+                await EventHub.SendAsync(eventData);
                 OutputStatus("Message sent.");
             }
             catch (Exception ex)
@@ -204,6 +215,28 @@ namespace SimpleExplorer
             {
                 btnSend.Enabled = true;
             }
+        }
+
+        private EventData CreateEventData()
+        {
+            var eventData = new EventData(Encoding.UTF8.GetBytes(tbEhInput.Text.Trim()));
+
+            if (dataGridView1.Rows.Count > 0)
+            {
+                for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                {
+                    if (dataGridView1[0, i].Value == null || dataGridView1[1, i].Value == null)
+                    {
+                        continue;
+                    }
+
+                    var key = dataGridView1[0, i].Value.ToString();
+                    var value = dataGridView1[1, i].Value.ToString();
+                    eventData.Properties.Add(key, value);
+                }
+            }
+
+            return eventData;
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
@@ -226,7 +259,7 @@ namespace SimpleExplorer
                 {
                     Task.Run(() => EventHub.CloseAsync());
                 }
-                catch 
+                catch
                 {
                     // suppress error and close app
                 }
@@ -400,5 +433,18 @@ namespace SimpleExplorer
             btnConnect.Enabled = true;
         }
         #endregion
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
+            {
+                dataGridView1.Rows.RemoveAt(item.Index);
+            }
+        }
     }
 }
