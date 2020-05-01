@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Text;
@@ -200,11 +199,19 @@ namespace SimpleExplorer
         private async void btnSend_Click(object sender, EventArgs e)
         {
             btnSend.Enabled = false;
+            var partitionKey = textPartitionKey.Text;
             OutputStatus("Sending message...");
             try
             {
                 var eventData = CreateEventData();
-                await EventHub.SendAsync(eventData);
+                if (!String.IsNullOrEmpty(partitionKey))
+                {
+                    await EventHub.SendAsync(eventData, partitionKey);
+                }
+                else
+                {
+                    await EventHub.SendAsync(eventData);
+                }
                 OutputStatus("Message sent.");
             }
             catch (Exception ex)

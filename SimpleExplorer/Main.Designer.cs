@@ -54,13 +54,16 @@
             this.btnStop = new System.Windows.Forms.Button();
             this.btnRead = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.textPartitionKey = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.gbConnSettings.SuspendLayout();
             this.gbSendMsg.SuspendLayout();
             this.gbReadMsg.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbEhOutput
@@ -319,14 +322,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Message Properties";
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 19);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(418, 136);
-            this.dataGridView1.TabIndex = 1;
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(349, 172);
@@ -337,9 +332,35 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(6, 19);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(418, 136);
+            this.dataGridView1.TabIndex = 1;
+            // 
+            // textPartitionKey
+            // 
+            this.textPartitionKey.Location = new System.Drawing.Point(6, 25);
+            this.textPartitionKey.Name = "textPartitionKey";
+            this.textPartitionKey.Size = new System.Drawing.Size(388, 20);
+            this.textPartitionKey.TabIndex = 11;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.textPartitionKey);
+            this.groupBox2.Location = new System.Drawing.Point(1077, 239);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(430, 63);
+            this.groupBox2.TabIndex = 15;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Partitionkey to send to";
+            // 
             // Main
             // 
             this.ClientSize = new System.Drawing.Size(1519, 718);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gbReadMsg);
             this.Controls.Add(this.gbSendMsg);
@@ -356,6 +377,8 @@
             this.gbReadMsg.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -391,6 +414,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textPartitionKey;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
 
